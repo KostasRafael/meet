@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CitySearch = ({ allLocations }) => {
+  // when the useEffect() is completed in the App component, allLocations will be changed from an empty array
+  // to an array that contains all the locations. This change, will triger the useEffect in line 9 to execute.
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    setSuggestions(allLocations);
+  }, [`${allLocations}`]); // {allLocations} is a dependency
+  // The function executes only, and evrytime, the allLocations state changes
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
