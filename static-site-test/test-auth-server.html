@@ -62,7 +62,7 @@
                     const result = JSON.stringify(json);  // converts the json to a string
                     // we get the value of authUrl
                     const { authUrl } = JSON.parse(result); // converts the json to a string
-                    // then add it to the html. Here, we finally have the url string alone.
+                    // then adds it to the html. Here, we finally have the url string alone.
                     resultElement.innerText = result;
                     resultLink.href = authUrl; // Here, we pass the url string as a href value to the link.
                 });
