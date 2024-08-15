@@ -1,5 +1,9 @@
-import { getAccessToken } from "../auth-server/handler";
 import mockData from "./mock-data";
+
+const getAuthURL =
+  " https://tygdu05v41.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url";
+const getToken =
+  "https://tygdu05v41.execute-api.eu-central-1.amazonaws.com/dev/api/token";
 
 export const extractLocations = (events) => {
   const extractedLocations = events.map((event) => event.location);
@@ -8,7 +12,45 @@ export const extractLocations = (events) => {
 };
 
 export const getEvents = async () => {
-  return mockData;
+  if (window.location.href.startsWith("http://localhost")) {
+    return mockData;
+  }
+
+  const getToken = async (code) => {
+    const encodeCode = encodeURIComponent(code);
+    const response = await fetch(getAuthURL + "/" + encodeCode);
+    const { access_token } = await response.json();
+    access_token && localStorage.setItem("access_token", access_token);
+
+    return access_token;
+  };
+
+  const token = await getAccessToken();
+
+  const removeQuery = () => {
+    let newurl;
+    if (window.history.pushState && window.location.pathname) {
+      newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname;
+      window.history.pushState("", "", newurl);
+    } else {
+      newurl = window.location.protocol + "//" + window.location.host;
+      window.history.pushState("", "", newurl);
+    }
+  };
+
+  if (token) {
+    removeQuery();
+    const url = getToken + "/" + token;
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result) {
+      return result.events;
+    } else return null;
+  }
 };
 
 /*const checkToken = async (accessToken) => {
