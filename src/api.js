@@ -69,7 +69,7 @@ export const getAccessToken = async () => {
     const searchParams = new URLSearchParams(window.location.search);
     const code = await searchParams.get("code");
     if (!code) {
-      const response = await fetch(getAuthURL);
+      const response = await fetch(getURLEndpoint);
       const result = await response.json();
       const { authUrl } = result;
       return (window.location.href = authUrl);
