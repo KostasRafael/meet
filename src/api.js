@@ -4,6 +4,8 @@ const getURLEndpoint =
   "https://tygdu05v41.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url";
 const getTokenEndpoint =
   "https://tygdu05v41.execute-api.eu-central-1.amazonaws.com/dev/api/token";
+const getEventsEndpoint =
+  "https://tygdu05v41.execute-api.eu-central-1.amazonaws.com/dev/api/get-events";
 
 export const extractLocations = (events) => {
   const extractedLocations = events.map((event) => event.location);
@@ -28,7 +30,7 @@ export const getEvents = async () => {
 
   if (token) {
     removeQuery();
-    const url = getTokenEndpoint + "/" + token;
+    const url = getEventsEndpoint + "/" + token;
     const response = await fetch(url);
     const result = await response.json();
     if (result) {
@@ -54,7 +56,7 @@ const removeQuery = () => {
 
 const getToken = async (code) => {
   const encodeCode = encodeURIComponent(code);
-  const response = await fetch(getURLEndpoint + "/" + encodeCode);
+  const response = await fetch(getTokenEndpoint + "/" + encodeCode);
   const { access_token } = await response.json();
   access_token && localStorage.setItem("access_token", access_token);
 
