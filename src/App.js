@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentCity]); // the fetchData() function executes only one time, when the App component renders the first time.
+  }, [currentCity, currentNOE]); // the fetchData() function executes only one time, when the App component renders the first time.
 
   const fetchData = async () => {
     const allEvents = await getEvents();
@@ -29,8 +29,8 @@ const App = () => {
   return (
     <div className="App">
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+      <NumberOfEvents setCurrentNOE={setCurrentNOE} />
       <EventList events={events} />
-      <NumberOfEvents />
     </div>
   );
 };
