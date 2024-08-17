@@ -3,8 +3,8 @@ import { useState } from "react";
 const Event = ({ event }) => {
   const [showDetails, setShowDetails] = useState(false); // new
   return (
-    <li>
-      <h1>{event.summary}</h1>
+    <li className="event">
+      <h2>{event.summary}</h2>
       <p>{event.created}</p>
       <p>{event.location}</p>
       {showDetails ? (
@@ -13,7 +13,10 @@ const Event = ({ event }) => {
           <a href={event.htmlLink}>See details on Google Calendar</a>
         </div>
       ) : null}
-      <button onClick={() => setShowDetails(!showDetails)}>
+      <button
+        className="details-btn"
+        onClick={() => setShowDetails(!showDetails)}
+      >
         {showDetails ? "hide details" : "show details"}
       </button>
     </li>
