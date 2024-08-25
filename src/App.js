@@ -6,6 +6,7 @@ import { getEvents, extractLocations } from "./api";
 import "./App.css";
 import { InfoAlert } from "./components/Alert";
 import { ErrorAlert } from "./components/Alert";
+import { WarningAlert } from "./components/Alert";
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -15,10 +16,20 @@ const App = () => {
   // CitySearch.js once the user selects one of the suggestion items.
   const [infoAlert, setInfoAlert] = useState("");
   const [errorAlert, setErrorAlert] = useState("");
+  const [warningAlert, setWarningAlert] = useState("");
 
   useEffect(() => {
+    let infoText;
+    if (navigator.onLine) {
+      infoText = "";
+    } else {
+      infoText =
+        "You are offline. The displayed list has been loaded from the cache";
+    }
+    setWarningAlert(infoText);
+
     fetchData();
-  }, [currentCity, currentNOE]); // the fetchData() function executes only one time, when the App component renders the first time.
+  }, [currentCity, currentNOE]);
 
   const fetchData = async () => {
     const allEvents = await getEvents();
@@ -35,6 +46,7 @@ const App = () => {
       <div className="alerts-container">
         {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
         {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
+        {warningAlert.length ? <WarningAlert text={warningAlert} /> : null}
       </div>
       <CitySearch
         allLocations={allLocations}
