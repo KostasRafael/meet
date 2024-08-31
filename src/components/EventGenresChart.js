@@ -1,6 +1,13 @@
 import React, { PureComponent } from "react";
 import { useState, useEffect } from "react";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 const EventGenresChart = ({ events }) => {
   const [data, setData] = useState([]);
@@ -21,6 +28,8 @@ const EventGenresChart = ({ events }) => {
     setData(getData());
   }, [`${events}`]);
 
+  console.log(data);
+
   const renderCustomizedLabel = ({
     cx,
     cy,
@@ -37,7 +46,7 @@ const EventGenresChart = ({ events }) => {
       <text
         x={x}
         y={y}
-        fill="#8884d8"
+        fill={COLORS[index]}
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
       >
@@ -46,9 +55,11 @@ const EventGenresChart = ({ events }) => {
     ) : null;
   };
 
+  const COLORS = ["#fb2007 ", "#22fb07", "#1127f6", "#e9f611 ", "#d211f6"];
+
   return (
     <ResponsiveContainer width="99%" height={400}>
-      <PieChart>
+      <PieChart margin={{ bottom: 65, left: -40 }}>
         <Pie
           data={data}
           dataKey="value"
@@ -56,7 +67,12 @@ const EventGenresChart = ({ events }) => {
           labelLine={false}
           label={renderCustomizedLabel}
           outerRadius={130}
-        />
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Legend></Legend>
       </PieChart>
     </ResponsiveContainer>
   );
