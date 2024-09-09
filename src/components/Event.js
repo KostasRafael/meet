@@ -10,7 +10,9 @@ const Event = ({ event }) => {
       {showDetails ? (
         <div id="event-details">
           <p>{event.description}</p>
-          <a href={event.htmlLink}>See details on Google Calendar</a>
+          <a href={event.htmlLink} target="_blank" rel="noopener noreferrer">
+            See details on Google Calendar
+          </a>
         </div>
       ) : null}
       <button

@@ -1,27 +1,30 @@
 import { useState } from "react";
 
-const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
-  function handleInputChanged(event) {
-    let value = event.target.value;
+const NumberOfEvents = ({ currentNOE, setCurrentNOE, setErrorAlert }) => {
+  const [numberEvents, setNumberEvents] = useState(currentNOE);
+  const handleInputChanged = (event) => {
+    const value = Number(event.target.value);
+    setNumberEvents(value);
+    setCurrentNOE(value);
+
     let infoText;
     if (isNaN(value) || value <= 0) {
       infoText =
         "Please enter a valid number of events. That is, an actual positive number";
     } else {
       infoText = "";
-      setCurrentNOE(value);
     }
-    setNumberEvents(value);
-    setErrorAlert(infoText);
-  }
 
-  const [numberEvents, setNumberEvents] = useState("32");
+    setErrorAlert(infoText);
+  };
+
   return (
     <div id="number-events">
       <input
         type="text"
         value={numberEvents}
         onChange={handleInputChanged}
+        aria-label="Number of Events"
       ></input>
     </div>
   );

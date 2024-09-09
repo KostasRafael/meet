@@ -14,7 +14,11 @@ const EventGenresChart = ({ events }) => {
 
   const genres = ["React", "JavaScript", "Node", "jQuery", "Angular"];
 
-  function getData() {
+  useEffect(() => {
+    setData(getData());
+  }, [`${events}`]);
+
+  const getData = () => {
     const data = genres.map((genre) => {
       const filteredEvents = events.filter((event) =>
         event.summary.includes(genre)
@@ -22,11 +26,7 @@ const EventGenresChart = ({ events }) => {
       return { name: genre, value: filteredEvents.length };
     });
     return data;
-  }
-
-  useEffect(() => {
-    setData(getData());
-  }, [`${events}`]);
+  };
 
   console.log(data);
 

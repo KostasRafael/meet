@@ -20,19 +20,6 @@ const App = () => {
   const [errorAlert, setErrorAlert] = useState("");
   const [warningAlert, setWarningAlert] = useState("");
 
-  useEffect(() => {
-    let infoText;
-    if (navigator.onLine) {
-      infoText = "";
-    } else {
-      infoText =
-        "You are offline. The displayed list has been loaded from the cache";
-    }
-    setWarningAlert(infoText);
-
-    fetchData();
-  }, [currentCity, currentNOE]);
-
   const fetchData = async () => {
     const allEvents = await getEvents();
     const filteredEvents =
@@ -42,6 +29,17 @@ const App = () => {
     setEvents(filteredEvents.slice(0, currentNOE));
     setAllLocations(extractLocations(allEvents));
   };
+
+  useEffect(() => {
+    if (navigator.onLine) {
+      setWarningAlert(""); // Clear the warning alert message
+    } else {
+      setWarningAlert(
+        "You are currently offline. Some features may be unavailable."
+      ); // Set the warning alert message
+    }
+    fetchData();
+  }, [currentCity, currentNOE]);
 
   return (
     <div className="App">
@@ -56,6 +54,7 @@ const App = () => {
         setInfoAlert={setInfoAlert}
       />
       <NumberOfEvents
+        currentNOE={currentNOE}
         setCurrentNOE={setCurrentNOE}
         setErrorAlert={setErrorAlert}
       />
